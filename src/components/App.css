@@ -1,0 +1,200 @@
+.App {
+    /*text-align: center;*/
+    font-family: 'Conv_LANENAR_';
+}
+
+* {
+    -webkit-transition: all 0.25s ease-in-out;
+    -moz-transition: all 0.25s ease-in-out;
+    -o-transition: all 0.25s ease-in-out;
+    transition: all 0.25s ease-in-out;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+}
+
+.App-header {
+    background-color: #222;
+    height: 150px;
+    padding: 30px;
+    color: white;
+    text-align: center;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+.btn:focus {
+    outline: 0;
+}
+
+.todo-wrapper {
+    display: flex;
+}
+
+.todo-content {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.todo-content span,
+.todo-wrapper {
+    display: flex;
+}
+
+.filter-todo {
+    margin-top: 20px;
+}
+
+.todo-content span input {
+    margin-right: 20px;
+}
+
+input.todo-checkbox {
+    visibility: hidden;
+    position: relative;
+}
+
+input.todo-checkbox:after {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 22px;
+    background: url("../../public/images/checkbox.png") no-repeat center;
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    top: -6px;
+}
+
+input.todo-checkbox:checked:after {
+    background-image: url("../../public/images/checkbox-active.png");
+}
+
+input.todo-checkbox:disabled:after {
+    background-image: url("../../public/images/checkbox-disabled.png");
+}
+
+.todo-panel {
+    -webkit-box-shadow: 0 0 10px #e5e5e5;
+    -moz-box-shadow: 0 0 10px #e5e5e5;
+    box-shadow: 0 0 10px #e5e5e5;
+    border-color: #f0ad4e;
+}
+
+.panel-heading {
+    display: flex;
+    padding: 0px;
+    padding-left: 16px;
+}
+
+.panel-heading .add-todo-form {
+    flex: 1;
+}
+
+.panel-heading .todo-checkbox {
+    margin-right: 25px;
+}
+
+.panel-heading .add-todo {
+    padding: 30px 20px;
+    border: 0;
+    box-shadow: none;
+    border-left: 1px solid #eaab52;
+    border-radius: 0;
+    background-color: #fdf9f1;
+    font-family: 'Conv_LANENAR_';
+    font-size: 25px;
+    color: #f0ad4e;
+}
+
+.panel-heading input.todo-checkbox:after {
+    top: 15px;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #f2cd99 !important;
+}
+
+/*.panel-heading .form-control {*/
+/*border-color: #f3e1bc;*/
+/*box-shadow: 0 0 1px #eaab52, inset 0 0 1px #eaab52;*/
+/*}*/
+
+/*.panel-heading .form-control:focus {*/
+/*outline: 0;*/
+/*border-color: #eaab52;*/
+/*box-shadow: 0 0 5px #eaab52, inset 0 0 1px #eaab52;*/
+/*}*/
+
+.list-group-item {
+    font-weight: bold;
+    font-size:15px;
+}
+
+.list-group-item:hover {
+    background-color: #fdfcf4;
+}
+
+.list-group-item.completed {
+    background-color: #fdfcf4;
+    opacity: 0.5;
+}
+
+.list-group-item em {
+    color: #333;
+    font-style: normal;
+    cursor: pointer;
+    flex: 1;
+}
+
+.list-group-item.completed em {
+    text-decoration: line-through;
+    color: #a94442;
+    font-style: italic;
+}
+
+.list-group-item a,
+.list-group-item a:hover {
+    text-decoration: none;
+}
+
+.edit-todo, .delete-todo {
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.completed .edit-todo,
+.completed .delete-todo {
+    /*color: #a94442;*/
+}
+
+.edit-todo:hover, .delete-todo:hover {
+    text-decoration: underline;
+}
+
+.filter-btn-group {
+    margin-bottom: 20px;
+}
+
+.action-btns span em {
+    /*text-indent: -9999px;*/
+}
+
+.todo-item-info {
+    font-weight: normal;
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
