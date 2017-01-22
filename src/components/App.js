@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import autoBind from 'react-autobind';
+import uuidV1 from 'uuid/v1';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import Filter from './Filter';
@@ -7,6 +8,7 @@ import {getCompletedTodos} from './../common/utils';
 import logo from '../logo.svg';
 import './App.css';
 
+console.log(uuidV1());
 class App extends Component {
     constructor(props) {
         super(props);
@@ -23,7 +25,7 @@ class App extends Component {
             todos: [
                 ...this.state.todos,
                 {
-                    id: this.state.todos.length++,
+                    id: uuidV1(),
                     text: todoText,
                     completed: false
                 }
@@ -33,8 +35,8 @@ class App extends Component {
 
     handleToggleTodo(todoId) {
         this.setState({
-            todos: this.state.todos.map((todo, index) => {
-                if (todoId === index) {
+            todos: this.state.todos.map((todo) => {
+                if (todoId === todo.id) {
                     return Object.assign({}, todo, {
                         completed: !todo.completed
                     });

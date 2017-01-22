@@ -9,15 +9,15 @@ class Todo extends Component {
     }
 
     handleToggleTodo() {
-        this.props.toggleTodo(this.props.index);
+        this.props.toggleTodo(this.props.todo.id);
     }
 
-    handleRemoveTodo(){
+    handleRemoveTodo() {
         this.props.removeTodo(this.props.index);
     }
 
-    handleEditTodo(){
-        this.props.editTodo(this.props.index);
+    handleEditTodo() {
+        this.props.editTodo(this.props.todo.id);
     }
 
     getClassNames() {
@@ -32,22 +32,24 @@ class Todo extends Component {
     render() {
         const {todo} = this.props;
         return (
-            <li className={this.getClassNames()} >
+            <li className={this.getClassNames()}>
                 <div className="todo-content">
                 <span onClick={this.handleToggleTodo.bind(this)}>
-                <input type="checkbox" className="todo-checkbox" checked={!!this.props.todo.completed} />
-                        {' '}
-                        <em>{todo.text}</em>
+                <input type="checkbox" className="todo-checkbox" checked={!!this.props.todo.completed}/>
+                    {' '}
+                    <em>{todo.text}</em>
                 </span>
                 </div>
                 <div className="action-wrapper">
                     <div className="pull-right action-btns">
                         <ul className="list-inline btn-action">
                             <li>
-                                <span onClick={this.handleRemoveTodo.bind(this)} className="delete-todo label label-danger">Remove</span>
+                                <span onClick={this.handleRemoveTodo.bind(this)}
+                                      className="delete-todo label label-danger">Remove</span>
                             </li>
                             <li>
-                                <span onClick={this.handleEditTodo.bind(this)} id="editTodo" className="edit-todo label label-success">Edit</span>
+                                <span onClick={this.handleEditTodo.bind(this)} id="editTodo"
+                                      className="edit-todo label label-success">Edit</span>
                             </li>
                         </ul>
                     </div>

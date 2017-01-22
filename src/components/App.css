@@ -132,7 +132,7 @@ input.todo-checkbox:disabled:after {
 
 .list-group-item {
     font-weight: bold;
-    font-size:15px;
+    font-size: 16px;
 }
 
 .list-group-item:hover {
@@ -165,6 +165,9 @@ input.todo-checkbox:disabled:after {
 .edit-todo, .delete-todo {
     cursor: pointer;
     text-transform: uppercase;
+    font-family: Arial;
+    font-size: 10px;
+    font-weight: normal;
 }
 
 .completed .edit-todo,
