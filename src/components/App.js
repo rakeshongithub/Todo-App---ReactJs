@@ -4,10 +4,33 @@ import uuidV1 from 'uuid/v1';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import Filter from './Filter';
-import {getCompletedTodos, getUpdatedTodo} from './../common/utils';
+import {getCompletedTodos, getTodoItem} from './../common/utils';
 import logo from '../logo.svg';
 import './App.css';
 
+function addTodoItem(todoText) {
+    const isFound = this.state.todos.find(todo => {
+        return todo.text === todoText
+    });
+    if (isFound) {
+        this.setState({
+            isDublicate: true
+        });
+        return this.state.todos;
+    }
+    this.setState({
+        isDublicate: false
+    });
+    return [
+        ...this.state.todos,
+        {
+            id: uuidV1(),
+            text: todoText,
+            completed: false,
+            isEdit: false
+        }
+    ];
+}
 class App extends Component {
     constructor(props) {
         super(props);
@@ -15,27 +38,20 @@ class App extends Component {
         this.state = {
             nowShowing: 'ALL',
             allCompleted: false,
+            isDublicate: false,
             todos: []
         };
     }
 
     handleAddTodo(todoText) {
         this.setState({
-            todos: [
-                ...this.state.todos,
-                {
-                    id: uuidV1(),
-                    text: todoText,
-                    completed: false,
-                    isEdit: false
-                }
-            ]
+            todos: addTodoItem.call(this, todoText)
         });
     }
 
     handleToggleTodo(todoId) {
         this.setState({
-            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+            todos: getTodoItem.call(this, todoId, function (todo) {
                 return Object.assign({}, todo, {
                     completed: !todo.completed
                 });
@@ -54,7 +70,7 @@ class App extends Component {
 
     handleEditTodo(todoId) {
         this.setState({
-            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+            todos: getTodoItem.call(this, todoId, function (todo) {
                 return Object.assign({}, todo, {
                     isEdit: true
                 });
@@ -64,7 +80,7 @@ class App extends Component {
 
     handleSaveTodo(updatedText, todoId) {
         this.setState({
-            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+            todos: getTodoItem.call(this, todoId, function (todo) {
                 return Object.assign({}, todo, {
                     isEdit: false,
                     text: updatedText
@@ -75,7 +91,7 @@ class App extends Component {
 
     handleCancelTodo(todoId) {
         this.setState({
-            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+            todos: getTodoItem.call(this, todoId, function (todo) {
                 return Object.assign({}, todo, {
                     isEdit: false
                 });
@@ -127,7 +143,9 @@ class App extends Component {
                     return true;
             }
         }, this);
-
+        const renderWarning = (
+            <div className="alert alert-warning"><strong>WARNING -</strong> Item already exist!</div>
+        );
         return (
             <div className="App">
                 <div className="App-header">
@@ -143,6 +161,7 @@ class App extends Component {
                                     todos={todos}
                                 />
                             </div>
+                            {this.state.isDublicate ? renderWarning : ''}
                             <div className="panel panel-warning todo-panel">
                                 <div className="panel-heading">
                                     <div className="toggle-all">
@@ -153,7 +172,7 @@ class App extends Component {
                                         />
                                     </div>
                                     <div className="add-todo-form">
-                                        <AddTodo handleOnSubmit={this.handleAddTodo}/>
+                                        <AddTodo todos={this.state.todos} handleOnSubmit={this.handleAddTodo}/>
                                     </div>
                                 </div>
                                 <TodoList

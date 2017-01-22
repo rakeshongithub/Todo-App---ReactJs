@@ -91,6 +91,10 @@ input.todo-checkbox:disabled:after {
     padding-left: 16px;
 }
 
+.panel-warning > .panel-heading {
+    border-bottom-color: #eaab52;
+}
+
 .panel-heading .add-todo-form {
     flex: 1;
 }
@@ -105,7 +109,7 @@ input.todo-checkbox:disabled:after {
     box-shadow: none;
     border-left: 1px solid #eaab52;
     border-radius: 0;
-    background-color: #fdf9f1;
+    background-color: #fff;
     font-family: 'Conv_LANENAR_';
     font-size: 25px;
     color: #f0ad4e;

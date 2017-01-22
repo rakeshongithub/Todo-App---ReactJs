@@ -6,7 +6,7 @@ export function getCompletedTodos(todos) {
     return {activeTodos, completedTodos}
 }
 
-export function getUpdatedTodo(todoId, _callBack) {
+export function getTodoItem(todoId, _callBack) {
     return this.state.todos.map((todo) => {
         if (todoId === todo.id) {
             return _callBack(todo);

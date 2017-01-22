@@ -19,7 +19,8 @@ class AddTodo extends Component {
     render() {
         return (
             <form ref="addTodoForm" onSubmit={this.handleSubmit} className="add-todo-form">
-                <input type="text" ref="todoInput" placeholder="What need to be done?" className="form-control add-todo"/>
+                <input type="text" ref="todoInput" placeholder="What need to be done?"
+                       className="form-control add-todo"/>
                 <button hidden className="btn-add-todo" type="submit">+ Add Todo</button>
             </form>
         )

@@ -44,8 +44,20 @@ class Todo extends Component {
     }
 
     handleEditSubmit(e) {
+        const text = this.refs.editTodo.value;
         e.preventDefault();
         this.handleSaveTodo();
+        const isFound = this.props.todos.find(todo => {
+            return todo.text === text
+        });
+
+        function isDublicate() {
+            return !text || (isFound && (isFound.id !== this.props.todo.id));
+        }
+
+        if (isDublicate.call(this)) {
+            this.handleRemoveTodo()
+        }
     }
 
     handleKeyDown(event) {
@@ -54,10 +66,6 @@ class Todo extends Component {
             this.handleCancelTodo()
         }
     }
-
-    // componentDidUpdate(){
-    //     this.refs.editTodo.focus()
-    // }
 
     render() {
         const {todo} = this.props;
