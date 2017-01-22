@@ -4,11 +4,10 @@ import uuidV1 from 'uuid/v1';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import Filter from './Filter';
-import {getCompletedTodos} from './../common/utils';
+import {getCompletedTodos, getUpdatedTodo} from './../common/utils';
 import logo from '../logo.svg';
 import './App.css';
 
-console.log(uuidV1());
 class App extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +26,8 @@ class App extends Component {
                 {
                     id: uuidV1(),
                     text: todoText,
-                    completed: false
+                    completed: false,
+                    isEdit: false
                 }
             ]
         });
@@ -35,13 +35,10 @@ class App extends Component {
 
     handleToggleTodo(todoId) {
         this.setState({
-            todos: this.state.todos.map((todo) => {
-                if (todoId === todo.id) {
-                    return Object.assign({}, todo, {
-                        completed: !todo.completed
-                    });
-                }
-                return todo;
+            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+                return Object.assign({}, todo, {
+                    completed: !todo.completed
+                });
             })
         });
     }
@@ -56,7 +53,34 @@ class App extends Component {
     }
 
     handleEditTodo(todoId) {
-        console.log(todoId)
+        this.setState({
+            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+                return Object.assign({}, todo, {
+                    isEdit: true
+                });
+            })
+        });
+    }
+
+    handleSaveTodo(updatedText, todoId) {
+        this.setState({
+            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+                return Object.assign({}, todo, {
+                    isEdit: false,
+                    text: updatedText
+                });
+            })
+        });
+    }
+
+    handleCancelTodo(todoId) {
+        this.setState({
+            todos: getUpdatedTodo.call(this, todoId, function(todo) {
+                return Object.assign({}, todo, {
+                    isEdit: false
+                });
+            })
+        });
     }
 
     handleToggleAll() {
@@ -137,7 +161,14 @@ class App extends Component {
                                     toggleTodo={this.handleToggleTodo}
                                     removeTodo={this.handleRemoveTodo}
                                     editTodo={this.handleEditTodo}
+                                    onSaveTodo={this.handleSaveTodo}
+                                    onCancelTodo={this.handleCancelTodo}
                                 />
+                            </div>
+                            <div className="todo-alert">
+                                <hr/>
+                                <p>Double-click to edit a todo!</p>
+                                <p>Created by <strong>Rakesh Kumar</strong></p>
                             </div>
                         </div>
                     </div>

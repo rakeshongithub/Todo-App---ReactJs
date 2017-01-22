@@ -1,9 +1,16 @@
-function getCompletedTodos(todos) {
+export function getCompletedTodos(todos) {
     const activeTodos = todos.reduce(function (accum, todo) {
-            return todo.completed ? accum : accum + 1;
-        }, 0);
+        return todo.completed ? accum : accum + 1;
+    }, 0);
     const completedTodos = todos.length - activeTodos;
     return {activeTodos, completedTodos}
 }
 
-export {getCompletedTodos}
+export function getUpdatedTodo(todoId, _callBack) {
+    return this.state.todos.map((todo) => {
+        if (todoId === todo.id) {
+            return _callBack(todo);
+        }
+        return todo;
+    });
+}

@@ -12,13 +12,13 @@
 
 .App-logo {
     animation: App-logo-spin infinite 20s linear;
-    height: 80px;
+    height: 60px;
 }
 
 .App-header {
     background-color: #222;
-    height: 150px;
-    padding: 30px;
+    height: 80px;
+    padding: 10px 30px 30px;
     color: white;
     text-align: center;
 }
@@ -67,7 +67,7 @@ input.todo-checkbox:after {
     visibility: visible;
     position: absolute;
     left: 0;
-    top: -6px;
+    top: -4px;
 }
 
 input.todo-checkbox:checked:after {
@@ -119,16 +119,17 @@ input.todo-checkbox:disabled:after {
     color: #f2cd99 !important;
 }
 
-/*.panel-heading .form-control {*/
-/*border-color: #f3e1bc;*/
-/*box-shadow: 0 0 1px #eaab52, inset 0 0 1px #eaab52;*/
-/*}*/
+.edit-todo-form {
+    width: 100%;
+}
 
-/*.panel-heading .form-control:focus {*/
-/*outline: 0;*/
-/*border-color: #eaab52;*/
-/*box-shadow: 0 0 5px #eaab52, inset 0 0 1px #eaab52;*/
-/*}*/
+.form-control.edit-todo-input:focus {
+    -webkit-box-shadow: 0 0 10px #e5e5e5;
+    -moz-box-shadow: 0 0 10px #e5e5e5;
+    box-shadow: 0 0 10px #e5e5e5;
+    border-color: #f0ad4e;
+    background-color: #faf6d9;
+}
 
 .list-group-item {
     font-weight: bold;
@@ -162,7 +163,8 @@ input.todo-checkbox:disabled:after {
     text-decoration: none;
 }
 
-.edit-todo, .delete-todo {
+.edit-todo, .delete-todo,
+.save-todo, .cancel-todo {
     cursor: pointer;
     text-transform: uppercase;
     font-family: Arial;
@@ -175,7 +177,8 @@ input.todo-checkbox:disabled:after {
     /*color: #a94442;*/
 }
 
-.edit-todo:hover, .delete-todo:hover {
+.edit-todo:hover, .delete-todo:hover,
+.save-todo:hover, .cancel-todo:hover {
     text-decoration: underline;
 }
 
@@ -183,14 +186,21 @@ input.todo-checkbox:disabled:after {
     margin-bottom: 20px;
 }
 
-.action-btns span em {
-    /*text-indent: -9999px;*/
-}
-
 .todo-item-info {
     font-weight: normal;
     font-size: 13px;
     margin-left: 10px;
+}
+
+.todo-alert {
+    font-family: Arial;
+    text-align: center;
+    font-size: 11px;
+    color: #cccccc;
+}
+
+.todo-alert strong {
+    color: #666;
 }
 
 @keyframes App-logo-spin {

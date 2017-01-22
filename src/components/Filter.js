@@ -30,6 +30,7 @@ class Filter extends Component {
                                 onClick={this.onFilterChange.bind(this, 'COMPLETED')}><span className="badge">{getCompletedTodos(todos).completedTodos}</span> COMPLETED</button>
                     </div>
                     <button className='btn btn-default btn-sm pull-right' onClick={this.onFilterChange.bind(this, 'REMOVE COMPLETED')}>REMOVE COMPLETED <span className="badge">{getCompletedTodos(todos).completedTodos}</span></button>
+                    <hr/>
                 </div>
             )
         }
