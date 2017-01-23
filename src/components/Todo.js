@@ -18,7 +18,6 @@ class Todo extends Component {
 
     handleEditTodo() {
         this.props.editTodo(this.props.todo.id);
-        // console.log()
     }
 
     handleSaveTodo() {

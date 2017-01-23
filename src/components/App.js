@@ -4,13 +4,13 @@ import uuidV1 from 'uuid/v1';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import Filter from './Filter';
-import {getCompletedTodos, getTodoItem} from './../common/utils';
+import {getCompletedTodos, setAppState, FILTERS_TODO} from './../common/utils';
 import logo from '../logo.svg';
 import './App.css';
 
 function addTodoItem(todoText) {
     const isFound = this.state.todos.find(todo => {
-        return todo.text === todoText
+        return todo.text === todoText;
     });
     if (isFound) {
         this.setState({
@@ -31,6 +31,7 @@ function addTodoItem(todoText) {
         }
     ];
 }
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -50,12 +51,10 @@ class App extends Component {
     }
 
     handleToggleTodo(todoId) {
-        this.setState({
-            todos: getTodoItem.call(this, todoId, function (todo) {
-                return Object.assign({}, todo, {
-                    completed: !todo.completed
-                });
-            })
+        setAppState.call(this, todoId, function (todo) {
+            return Object.assign({}, todo, {
+                completed: !todo.completed
+            });
         });
     }
 
@@ -69,60 +68,48 @@ class App extends Component {
     }
 
     handleEditTodo(todoId) {
-        this.setState({
-            todos: getTodoItem.call(this, todoId, function (todo) {
-                return Object.assign({}, todo, {
-                    isEdit: true
-                });
-            })
+        setAppState.call(this, todoId, function (todo) {
+            return Object.assign({}, todo, {
+                isEdit: true
+            });
         });
     }
 
     handleSaveTodo(updatedText, todoId) {
-        this.setState({
-            todos: getTodoItem.call(this, todoId, function (todo) {
-                return Object.assign({}, todo, {
-                    isEdit: false,
-                    text: updatedText
-                });
-            })
+        setAppState.call(this, todoId, function (todo) {
+            return Object.assign({}, todo, {
+                isEdit: false,
+                text: updatedText
+            });
         });
     }
 
     handleCancelTodo(todoId) {
-        this.setState({
-            todos: getTodoItem.call(this, todoId, function (todo) {
-                return Object.assign({}, todo, {
-                    isEdit: false
-                });
-            })
+        setAppState.call(this, todoId, function (todo) {
+            return Object.assign({}, todo, {
+                isEdit: false
+            });
         });
     }
 
     handleToggleAll() {
-        const {todos} = this.state;
-        const activeTodos = getCompletedTodos(todos).activeTodos;
-        this.setState({
-            todos: todos.map((todo) => {
-                return Object.assign({}, todo, {
-                    completed: !!activeTodos
-                });
-            })
+        const activeTodos = getCompletedTodos(this.state.todos).activeTodos;
+        setAppState.call(this, null, function (todo) {
+            return Object.assign({}, todo, {
+                completed: !!activeTodos
+            });
         });
     }
 
     filterTodo(filter) {
         switch (filter) {
-            case 'COMPLETED':
-                this.setState({nowShowing: filter});
-                return;
-            case 'ACTIVE':
-                this.setState({nowShowing: filter});
-                return;
-            case 'ALL':
-                this.setState({nowShowing: filter});
-                return;
-            case 'REMOVE COMPLETED':
+            case FILTERS_TODO.COMPLETED:
+                return this.setState({nowShowing: FILTERS_TODO.COMPLETED});
+            case FILTERS_TODO.ACTIVE:
+                return this.setState({nowShowing: FILTERS_TODO.ACTIVE});
+            case FILTERS_TODO.ALL:
+                return this.setState({nowShowing: FILTERS_TODO.ALL});
+            case FILTERS_TODO.REMOVE_COMPLETED:
                 return this.setState({
                     todos: this.state.todos.filter(todo => !todo.completed)
                 });
