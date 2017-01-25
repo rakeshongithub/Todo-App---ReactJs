@@ -6,7 +6,7 @@ export const FILTERS_TODO = {
 };
 
 export function getCompletedTodos(todos) {
-    const activeTodos = todos.reduce(function (accum, todo) {
+    const activeTodos = todos.reduce((accum, todo) => {
         return todo.completed ? accum : accum + 1;
     }, 0);
     const completedTodos = todos.length - activeTodos;

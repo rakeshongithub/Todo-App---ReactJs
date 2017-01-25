@@ -10,7 +10,7 @@ class Filter extends Component {
         autoBind(this);
     }
 
-    onFilterChange(filter) {
+    handleFilterChange(filter) {
         this.props.handleFilter(filter);
     }
 
@@ -21,17 +21,17 @@ class Filter extends Component {
                 <div>
                     <div className="btn-group btn-group-sm">
                         <Link to='/all' activeClassName={'btn-warning'} className="btn btn-default"
-                              onClick={this.onFilterChange.bind(this, FILTERS_TODO.ALL)}><span
+                              onClick={this.handleFilterChange.bind(this, FILTERS_TODO.ALL)}><span
                             className="badge">{todos.length}</span> ALL</Link>
                         <Link to="/active" activeClassName={'btn-warning'} className="btn btn-default"
-                              onClick={this.onFilterChange.bind(this, FILTERS_TODO.ACTIVE)}><span
+                              onClick={this.handleFilterChange.bind(this, FILTERS_TODO.ACTIVE)}><span
                             className="badge">{getCompletedTodos(todos).activeTodos}</span> ACTIVE</Link>
                         <Link to="/completed" activeClassName={'btn-warning'} className="btn btn-default"
-                              onClick={this.onFilterChange.bind(this, FILTERS_TODO.COMPLETED)}><span
+                              onClick={this.handleFilterChange.bind(this, FILTERS_TODO.COMPLETED)}><span
                             className="badge">{getCompletedTodos(todos).completedTodos}</span> COMPLETED</Link>
                     </div>
                     <button className='btn btn-default btn-sm pull-right'
-                            onClick={this.onFilterChange.bind(this, 'REMOVE COMPLETED')}>REMOVE COMPLETED <span
+                            onClick={this.handleFilterChange.bind(this, 'REMOVE COMPLETED')}>REMOVE COMPLETED <span
                         className="badge">{getCompletedTodos(todos).completedTodos}</span></button>
                     <hr/>
                 </div>

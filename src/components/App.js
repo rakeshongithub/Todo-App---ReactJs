@@ -4,54 +4,40 @@ import uuidV1 from 'uuid/v1';
 import TodoList from './TodoList';
 import AddTodo from './AddTodo';
 import Filter from './Filter';
-import {getCompletedTodos, setAppState, FILTERS_TODO} from './../common/utils';
+import Footer from './Footer';
+import Alert from './Alert';
+import {getCompletedTodos, setAppState, FILTERS_TODO, WARNING_MSG} from './../common/utils';
 import logo from '../logo.svg';
 import './App.css';
-
-function addTodoItem(todoText) {
-    const isFound = this.state.todos.find(todo => {
-        return todo.text === todoText;
-    });
-    if (isFound) {
-        this.setState({
-            isDublicate: true
-        });
-        return this.state.todos;
-    }
-    this.setState({
-        isDublicate: false
-    });
-    return [
-        ...this.state.todos,
-        {
-            id: uuidV1(),
-            text: todoText,
-            completed: false,
-            isEdit: false
-        }
-    ];
-}
 
 class App extends Component {
     constructor(props) {
         super(props);
         autoBind(this);
+
+        // initial state of app
         this.state = {
-            nowShowing: 'ALL',
-            allCompleted: false,
-            isDublicate: false,
+            nowShowing: FILTERS_TODO.ALL,
             todos: []
         };
     }
 
     handleAddTodo(todoText) {
         this.setState({
-            todos: addTodoItem.call(this, todoText)
+            todos: [
+                ...this.state.todos,
+                {
+                    id: uuidV1(),
+                    text: todoText,
+                    completed: false,
+                    isEdit: false
+                }
+            ]
         });
     }
 
     handleToggleTodo(todoId) {
-        setAppState.call(this, todoId, function (todo) {
+        setAppState.call(this, todoId, todo => {
             return Object.assign({}, todo, {
                 completed: !todo.completed
             });
@@ -68,7 +54,7 @@ class App extends Component {
     }
 
     handleEditTodo(todoId) {
-        setAppState.call(this, todoId, function (todo) {
+        setAppState.call(this, todoId, todo => {
             return Object.assign({}, todo, {
                 isEdit: true
             });
@@ -76,7 +62,7 @@ class App extends Component {
     }
 
     handleSaveTodo(updatedText, todoId) {
-        setAppState.call(this, todoId, function (todo) {
+        setAppState.call(this, todoId, todo => {
             return Object.assign({}, todo, {
                 isEdit: false,
                 text: updatedText
@@ -85,7 +71,7 @@ class App extends Component {
     }
 
     handleCancelTodo(todoId) {
-        setAppState.call(this, todoId, function (todo) {
+        setAppState.call(this, todoId, todo => {
             return Object.assign({}, todo, {
                 isEdit: false
             });
@@ -94,7 +80,7 @@ class App extends Component {
 
     handleToggleAll() {
         const activeTodos = getCompletedTodos(this.state.todos).activeTodos;
-        setAppState.call(this, null, function (todo) {
+        setAppState.call(this, null, todo => {
             return Object.assign({}, todo, {
                 completed: !!activeTodos
             });
@@ -104,11 +90,11 @@ class App extends Component {
     filterTodo(filter) {
         switch (filter) {
             case FILTERS_TODO.COMPLETED:
-                return this.setState({nowShowing: FILTERS_TODO.COMPLETED});
+                return this.setState({nowShowing: filter});
             case FILTERS_TODO.ACTIVE:
-                return this.setState({nowShowing: FILTERS_TODO.ACTIVE});
+                return this.setState({nowShowing: filter});
             case FILTERS_TODO.ALL:
-                return this.setState({nowShowing: FILTERS_TODO.ALL});
+                return this.setState({nowShowing: filter});
             case FILTERS_TODO.REMOVE_COMPLETED:
                 return this.setState({
                     todos: this.state.todos.filter(todo => !todo.completed)
@@ -120,19 +106,23 @@ class App extends Component {
 
     render() {
         const {todos} = this.state;
-        const shownTodos = todos.filter(function (todo) {
+        const filteredTodos = todos.filter(todo => {
             switch (this.state.nowShowing) {
-                case 'COMPLETED':
+                case FILTERS_TODO.COMPLETED:
                     return todo.completed;
-                case 'ACTIVE':
+                case FILTERS_TODO.ACTIVE:
                     return !todo.completed;
                 default:
                     return true;
             }
         }, this);
-        const renderWarning = (
-            <div className="alert alert-warning"><strong>WARNING -</strong> Item already exist!</div>
-        );
+
+        // created array of todos text.
+        const todoTextArr = todos.map(item => item.text);
+
+        // Checking for duplicate item from todosTextArr and enable the warning alert box.
+        let isDuplicate = todoTextArr.some((item, id) => todoTextArr.indexOf(item) !== id);
+
         return (
             <div className="App">
                 <div className="App-header">
@@ -148,7 +138,7 @@ class App extends Component {
                                     todos={todos}
                                 />
                             </div>
-                            {this.state.isDublicate && todos.length ? renderWarning : ''}
+                            {isDuplicate ? <Alert message={WARNING_MSG}/> : ''}
                             <div className="panel panel-warning todo-panel">
                                 <div className="panel-heading">
                                     <div className="toggle-all">
@@ -163,19 +153,15 @@ class App extends Component {
                                     </div>
                                 </div>
                                 <TodoList
-                                    todos={shownTodos}
-                                    toggleTodo={this.handleToggleTodo}
-                                    removeTodo={this.handleRemoveTodo}
-                                    editTodo={this.handleEditTodo}
+                                    todos={filteredTodos}
+                                    onToggleTodo={this.handleToggleTodo}
+                                    onRemoveTodo={this.handleRemoveTodo}
+                                    onEditTodo={this.handleEditTodo}
                                     onSaveTodo={this.handleSaveTodo}
                                     onCancelTodo={this.handleCancelTodo}
                                 />
                             </div>
-                            <div className="todo-alert">
-                                <hr/>
-                                <p>Double-click to edit a todo!</p>
-                                <p>Created by <strong>Rakesh Kumar</strong></p>
-                            </div>
+                            <Footer/>
                         </div>
                     </div>
                 </div>

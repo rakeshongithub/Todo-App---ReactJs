@@ -9,15 +9,15 @@ class Todo extends Component {
     }
 
     handleToggleTodo() {
-        this.props.toggleTodo(this.props.todo.id);
+        this.props.onToggleTodo(this.props.todo.id);
     }
 
     handleRemoveTodo() {
-        this.props.removeTodo(this.props.index);
+        this.props.onRemoveTodo(this.props.index);
     }
 
     handleEditTodo() {
-        this.props.editTodo(this.props.todo.id);
+        this.props.onEditTodo(this.props.todo.id);
     }
 
     handleSaveTodo() {
@@ -43,20 +43,8 @@ class Todo extends Component {
     }
 
     handleEditSubmit(e) {
-        const text = this.refs.editTodo.value;
         e.preventDefault();
         this.handleSaveTodo();
-        const isFound = this.props.todos.find(todo => {
-            return todo.text === text
-        });
-
-        function isDublicate() {
-            return !text || (isFound && (isFound.id !== this.props.todo.id));
-        }
-
-        if (isDublicate.call(this)) {
-            this.handleRemoveTodo()
-        }
     }
 
     handleKeyDown(event) {
