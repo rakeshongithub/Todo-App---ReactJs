@@ -148,7 +148,7 @@ class App extends Component {
                                     todos={todos}
                                 />
                             </div>
-                            {this.state.isDublicate ? renderWarning : ''}
+                            {this.state.isDublicate && todos.length ? renderWarning : ''}
                             <div className="panel panel-warning todo-panel">
                                 <div className="panel-heading">
                                     <div className="toggle-all">
