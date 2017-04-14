@@ -5,7 +5,7 @@ export const FILTERS_TODO = {
     REMOVE_COMPLETED: 'REMOVE COMPLETED'
 };
 
-export const WARNING_MSG = 'List contains dublicate items.';
+export const WARNING_MSG = 'List contains duplicate items.';
 
 export function getCompletedTodos(todos) {
     const activeTodos = todos.reduce((accum, todo) => {
