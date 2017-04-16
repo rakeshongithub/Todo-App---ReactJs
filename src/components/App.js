@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import { FILTERS_TODO } from './../common/utils';
+import { getCompletedTodos, setAppState, FILTERS_TODO } from './../common/utils';
 import AppHeader from './AppHeader';
 import Container from './Container';
 import {
@@ -10,7 +10,8 @@ import {
     handleEditTodo,
     handleSaveTodo,
     handleCancelTodo,
-    handleToggleAll
+    handleToggleAll,
+    removeCompleted
 } from './state-actions';
 import './App.css';
 
@@ -37,7 +38,9 @@ class App extends Component {
     }
 
     handleToggleTodo(todoId) {
-        handleToggleTodo.call(this, todoId)
+        setAppState.call(this, todoId, todo => {
+            return handleToggleTodo(todo)
+        });
     }
 
     handleRemoveTodo(todoId) {
@@ -45,19 +48,31 @@ class App extends Component {
     }
 
     handleEditTodo(todoId) {
-        handleEditTodo.call(this, todoId)
+        setAppState.call(this, todoId, todo => {
+            return handleEditTodo(todo)
+        });
     }
 
     handleSaveTodo(updatedText, todoId) {
-        handleSaveTodo.call(this, updatedText, todoId);
+        if (updatedText === '' || updatedText === null || updatedText === undefined) {
+            return this.handleRemoveTodo(todoId);
+        }
+        setAppState.call(this, todoId, todo => {
+            return handleSaveTodo(updatedText, todo);
+        });
     }
 
     handleCancelTodo(todoId) {
-        handleCancelTodo.call(this, todoId);
+        setAppState.call(this, todoId, todo => {
+            return handleCancelTodo(todo);
+        });
     }
 
     handleToggleAll() {
-        handleToggleAll.call(this, this.state);
+        const activeTodos = getCompletedTodos(this.state.todos).activeTodos;
+        setAppState.call(this, null, todo => {
+            return handleToggleAll(todo, activeTodos);
+        });
     }
 
     filterTodo(filter) {
@@ -65,9 +80,7 @@ class App extends Component {
     }
 
     removeCompleted() {
-        this.setState({
-            todos: this.state.todos.filter(todo => !todo.completed)
-        })
+        this.setState(removeCompleted(this.state))
     }
 
     render() {

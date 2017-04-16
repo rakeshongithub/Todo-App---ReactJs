@@ -13,7 +13,7 @@ class Todo extends Component {
     }
 
     handleRemoveTodo() {
-        this.props.onRemoveTodo(this.props.index);
+        this.props.onRemoveTodo(this.props.todo.id);
     }
 
     handleEditTodo() {

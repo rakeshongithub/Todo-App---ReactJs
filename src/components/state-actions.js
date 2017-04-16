@@ -1,5 +1,4 @@
 import uuidV1 from 'uuid/v1';
-import { getCompletedTodos, setAppState } from './../common/utils';
 
 export function handleAddTodo(state, todoText) {
     return {
@@ -15,53 +14,47 @@ export function handleAddTodo(state, todoText) {
     }
 }
 
-export function handleToggleTodo(todoId) {
-    setAppState.call(this, todoId, todo => {
-        return Object.assign({}, todo, {
-            completed: !todo.completed
-        });
+export function handleToggleTodo(todo) {
+    return Object.assign({}, todo, {
+        completed: !todo.completed
     });
 }
 
 export function handleRemoveTodo(state, todoId) {
     return {
-        todos: [
-            ...state.todos.slice(0, todoId),
-            ...state.todos.slice(todoId + 1)
-        ]
+        todos: state.todos.filter((todo) => {
+            return todo.id !== todoId
+        })
     }
 }
 
-export function handleEditTodo(todoId) {
-    setAppState.call(this, todoId, todo => {
-        return Object.assign({}, todo, {
-            isEdit: true
-        });
+export function handleEditTodo(todo) {
+    return Object.assign({}, todo, {
+        isEdit: true
     });
 }
 
-export function handleSaveTodo(updatedText, todoId) {
-    setAppState.call(this, todoId, todo => {
-        return Object.assign({}, todo, {
-            isEdit: false,
-            text: updatedText
-        });
+export function handleSaveTodo(updatedText, todo) {
+    return Object.assign({}, todo, {
+        isEdit: false,
+        text: updatedText
     });
 }
 
-export function handleCancelTodo(todoId) {
-    setAppState.call(this, todoId, todo => {
-        return Object.assign({}, todo, {
-            isEdit: false
-        });
+export function handleCancelTodo(todo) {
+    return Object.assign({}, todo, {
+        isEdit: false
     });
 }
 
-export function handleToggleAll(state) {
-    const activeTodos = getCompletedTodos(state.todos).activeTodos;
-    setAppState.call(this, null, todo => {
-        return Object.assign({}, todo, {
-            completed: !!activeTodos
-        });
+export function handleToggleAll(todo, activeTodos) {
+    return Object.assign({}, todo, {
+        completed: !!activeTodos
     });
+}
+
+export function removeCompleted(state) {
+    return {
+        todos: state.todos.filter(todo => !todo.completed)
+    }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { shallow } from 'enzyme';
-import App from './App';
+import { shallow, mount } from 'enzyme';
+import App from '../components/App';
 
 describe('App', () => {
   it('should be able to run the test', () => {
@@ -16,7 +16,7 @@ describe('App', () => {
   });
   
   it('shallow renders without crashing', () => {
-    shallow(<App />);
+    mount(<App />);
   });
 
 })
