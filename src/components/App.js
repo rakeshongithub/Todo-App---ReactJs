@@ -31,12 +31,20 @@ class App extends Component {
     }
 
     setLocalStorage(state) {
-        localStorage.setItem('appState', JSON.stringify(state));
+        localStorage.setItem('store', JSON.stringify(state));
     }
 
     getFromLocalStorage() {
-        return JSON.parse(localStorage.getItem('appState'));
-    } 
+        if (localStorage.getItem('store')) {
+            return JSON.parse(localStorage.getItem('store'));
+        }
+        
+        return {
+            nowShowing: FILTERS_TODO.ALL,
+            todos: []
+        }
+
+    }
 
     handleAddTodo(todoText) {
         this.setState(handleAddTodo(this.state, todoText));
@@ -88,10 +96,10 @@ class App extends Component {
         this.setState(removeCompleted(this.state))
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         this.setLocalStorage(this.state);
     }
-    
+
     render() {
         var propsObject = {};
         propsObject.handleAddTodo = this.handleAddTodo
