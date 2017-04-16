@@ -27,11 +27,16 @@ class App extends Component {
         autoBind(this);
 
         // initial state of app
-        this.state = {
-            nowShowing: FILTERS_TODO.ALL,
-            todos: []
-        };
+        this.state = this.getFromLocalStorage();
     }
+
+    setLocalStorage(state) {
+        localStorage.setItem('appState', JSON.stringify(state));
+    }
+
+    getFromLocalStorage() {
+        return JSON.parse(localStorage.getItem('appState'));
+    } 
 
     handleAddTodo(todoText) {
         this.setState(handleAddTodo(this.state, todoText));
@@ -83,6 +88,10 @@ class App extends Component {
         this.setState(removeCompleted(this.state))
     }
 
+    componentDidUpdate(){
+        this.setLocalStorage(this.state);
+    }
+    
     render() {
         var propsObject = {};
         propsObject.handleAddTodo = this.handleAddTodo
