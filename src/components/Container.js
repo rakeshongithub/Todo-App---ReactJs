@@ -46,6 +46,10 @@ class Container extends Component {
         this.props.filterTodo(filter);
     }
 
+    removeCompleted() {
+        this.props.removeCompleted();
+    }
+
     render() {
         const todos = this.props.todos;
         const filteredTodos = todos.filter(todo => {
@@ -72,6 +76,7 @@ class Container extends Component {
                         <div className="filter-todo">
                             <Filter
                                 handleFilter={this.handleFilterTodo}
+                                removeCompleted={this.removeCompleted}
                                 nowShowing={this.props.nowShowing}
                                 todos={todos}
                             />

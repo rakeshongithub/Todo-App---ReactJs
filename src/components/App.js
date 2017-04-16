@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
 import autoBind from 'react-autobind';
-import uuidV1 from 'uuid/v1';
+import { FILTERS_TODO } from './../common/utils';
 import AppHeader from './AppHeader';
 import Container from './Container';
-import { getCompletedTodos, setAppState, FILTERS_TODO } from './../common/utils';
+import {
+    handleAddTodo,
+    handleToggleTodo,
+    handleRemoveTodo,
+    handleEditTodo,
+    handleSaveTodo,
+    handleCancelTodo,
+    handleToggleAll
+} from './state-actions';
 import './App.css';
+
+var filters = {
+    'ACTIVE': { nowShowing: FILTERS_TODO.ACTIVE },
+    'COMPLETED': { nowShowing: FILTERS_TODO.COMPLETED },
+    'ALL': { nowShowing: FILTERS_TODO.ALL }
+}
 
 class App extends Component {
     constructor(props) {
@@ -19,85 +33,41 @@ class App extends Component {
     }
 
     handleAddTodo(todoText) {
-        this.setState({
-            todos: [
-                ...this.state.todos,
-                {
-                    id: uuidV1(),
-                    text: todoText,
-                    completed: false,
-                    isEdit: false
-                }
-            ]
-        });
+        this.setState(handleAddTodo(this.state, todoText));
     }
 
     handleToggleTodo(todoId) {
-        setAppState.call(this, todoId, todo => {
-            return Object.assign({}, todo, {
-                completed: !todo.completed
-            });
-        });
+        handleToggleTodo.call(this, todoId)
     }
 
     handleRemoveTodo(todoId) {
-        this.setState({
-            todos: [
-                ...this.state.todos.slice(0, todoId),
-                ...this.state.todos.slice(todoId + 1)
-            ]
-        });
+        this.setState(handleRemoveTodo(this.state, todoId));
     }
 
     handleEditTodo(todoId) {
-        setAppState.call(this, todoId, todo => {
-            return Object.assign({}, todo, {
-                isEdit: true
-            });
-        });
+        handleEditTodo.call(this, todoId)
     }
 
     handleSaveTodo(updatedText, todoId) {
-        setAppState.call(this, todoId, todo => {
-            return Object.assign({}, todo, {
-                isEdit: false,
-                text: updatedText
-            });
-        });
+        handleSaveTodo.call(this, updatedText, todoId);
     }
 
     handleCancelTodo(todoId) {
-        setAppState.call(this, todoId, todo => {
-            return Object.assign({}, todo, {
-                isEdit: false
-            });
-        });
+        handleCancelTodo.call(this, todoId);
     }
 
     handleToggleAll() {
-        const activeTodos = getCompletedTodos(this.state.todos).activeTodos;
-        setAppState.call(this, null, todo => {
-            return Object.assign({}, todo, {
-                completed: !!activeTodos
-            });
-        });
+        handleToggleAll.call(this, this.state);
     }
 
     filterTodo(filter) {
-        switch (filter) {
-            case FILTERS_TODO.COMPLETED:
-                return this.setState({ nowShowing: filter });
-            case FILTERS_TODO.ACTIVE:
-                return this.setState({ nowShowing: filter });
-            case FILTERS_TODO.ALL:
-                return this.setState({ nowShowing: filter });
-            case FILTERS_TODO.REMOVE_COMPLETED:
-                return this.setState({
-                    todos: this.state.todos.filter(todo => !todo.completed)
-                });
-            default:
-                return true;
-        }
+        this.setState(filters[filter]);
+    }
+
+    removeCompleted() {
+        this.setState({
+            todos: this.state.todos.filter(todo => !todo.completed)
+        })
     }
 
     render() {
@@ -106,6 +76,7 @@ class App extends Component {
         propsObject.handleToggleTodo = this.handleToggleTodo
         propsObject.handleToggleAll = this.handleToggleAll
         propsObject.handleRemoveTodo = this.handleRemoveTodo
+        propsObject.removeCompleted = this.removeCompleted
         propsObject.handleEditTodo = this.handleEditTodo
         propsObject.handleSaveTodo = this.handleSaveTodo
         propsObject.handleCancelTodo = this.handleCancelTodo
